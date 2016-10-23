@@ -1,3 +1,7 @@
-alert("Toto à la plage");
-
-$('p').css('color', 'blue');
+$(function() {
+	var angle = 0;
+  	setInterval(function(){
+    	angle+=3;
+  		$("section img").rotate(angle);
+  	},50)
+});

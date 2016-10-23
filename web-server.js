@@ -6,6 +6,20 @@ var fs = require('fs');
 
 var DEFAULT_PORT = 6430;
 
+var myWebPages = {
+	"/":{"file":"html/index.html"}
+}
+
+var mimeTypes = {
+	"jpg":"image/jpeg",
+	"jpeg":"image/jpeg",
+	"png":"image/png",
+	"gif":"image/gif",
+	"svg": "image/svg+xml",
+	"css":"text/css",
+	"js":"text/javascript"
+}
+
 function render(response, file, contentType) {	
 	fs.readFile(file, function(error, data) {
 		if (error) {
@@ -18,29 +32,12 @@ function render(response, file, contentType) {
 	})
 }
 
-
-
-var myPages = {
-	"/":{
-		"file":"file.html", "contentType": "text/html"
-	}
-}
-
-var mimeTypes = {
-	"jpg":"image/jpeg",
-	"jpeg":"image/jpeg",
-	"png":"image/png",
-	"gif":"image/gif",
-	"css":"text/css",
-	"js":"text/javascript"
-}
-
 var server = http.createServer(function(request, response) {
 	var path = url.parse(request.url).pathname;
 	// If path refer to an Image file
-	if (path.match(/^.*\.(jpg|jpeg|png)$/)) {
+	if (path.match(/^.*\.(jpg|jpeg|png|gif|svg)$/)) {
 		var file = path.substring(1);
-		var m = path.match(/^.*\.(jpg|jpeg|png|gif)$/);
+		var m = path.match(/^.*\.(jpg|jpeg|png|gif|svg)$/);
 		var fileExt = m[1];
 		var contentType = mimeTypes[fileExt]
 		render(response, file, contentType);
@@ -54,8 +51,9 @@ var server = http.createServer(function(request, response) {
 		var file = path.substring(1);
 		var contentType = mimeTypes['js'];
 		render(response, file, contentType);
-	} else if (myPages[path]) {
-		render(response, myPages[path].file, myPages[path].contentType);
+	// If path refer to a webpage
+	} else if (myWebPages[path]) {
+		render(response, myWebPages[path].file, "text/html");
 	} else {
 		response.writeHead(404, {"Content-Type": "text/html"});
 		response.write('<p>oups</p>')
