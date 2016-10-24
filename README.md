@@ -31,10 +31,13 @@ Edit the application file **app.js** to fit your project settings.
     ```javascript
     app.myWebPages = {
         "/my-first-page":{"file":"html/my-first-page.html"},
+
         "/my-second-page":{"file":"html/my-second-page.html"},
+        
         "/my-third-page":{"file":"html/my-third-page.html"}
     };
     ```
+
 Start the web server by running the application file **app.js**.
 ```sh
 $ node app.js
